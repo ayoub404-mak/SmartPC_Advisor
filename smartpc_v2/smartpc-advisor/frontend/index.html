@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartPC Advisor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-indigo-600 text-white shadow-lg">
+    <div class="container mx-auto px-4 py-4">
+      <h1 class="text-2xl font-bold">SmartPC Advisor</h1>
+      <p class="text-indigo-100 text-sm">AI-powered PC & laptop recommendations</p>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="bg-white shadow-sm border-b border-slate-200">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap gap-2 py-3">
+        <button data-page="questionnaire" class="nav-tab px-4 py-2 rounded-lg font-medium transition">Questionnaire</button>
+        <button data-page="results" class="nav-tab px-4 py-2 rounded-lg font-medium transition hidden">Results</button>
+        <button data-page="used-check" class="nav-tab px-4 py-2 rounded-lg font-medium transition">Used Laptop Check</button>
+        <button data-page="budget-stretch" class="nav-tab px-4 py-2 rounded-lg font-medium transition">Budget Stretch</button>
+        <button data-page="ai-chat" class="nav-tab px-4 py-2 rounded-lg font-medium transition">AI Chat</button>
+        <button data-page="judge-mode" class="nav-tab px-4 py-2 rounded-lg font-medium transition">Judge Mode</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Page 1: Questionnaire -->
+    <section id="page-questionnaire" class="page-content">
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">What do you need?</h2>
+        <form id="questionnaire-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Primary Usage</label>
+            <select name="usage" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+              <option value="office">Office / Productivity</option>
+              <option value="student">Student / Learning</option>
+              <option value="creative">Creative / Video Editing</option>
+              <option value="gaming">Gaming</option>
+              <option value="general">General Use</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Budget (USD)</label>
+            <input type="number" name="budget" placeholder="e.g. 800" min="0" step="50"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+          </div>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="multitasking" class="rounded border-slate-300">
+              <span class="text-slate-700">Heavy multitasking</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" name="gaming" class="rounded border-slate-300">
+              <span class="text-slate-700">Gaming</span>
+            </label>
+          </div>
+          <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold">
+            Get Recommendations
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Page 2: Results -->
+    <section id="page-results" class="page-content hidden">
+      <div id="results-container" class="space-y-4">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- Page 3: Used Laptop Check -->
+    <section id="page-used-check" class="page-content hidden">
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">Used Laptop Risk Check</h2>
+        <form id="risk-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Battery Health (%)</label>
+            <input type="number" name="battery_health" min="0" max="100" placeholder="e.g. 85"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">SSD Health (%)</label>
+            <input type="number" name="ssd_health" min="0" max="100" placeholder="e.g. 95"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Battery Cycle Count</label>
+            <input type="number" name="cycle_count" min="0" placeholder="e.g. 200"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Temperature (°C) - optional</label>
+            <input type="number" name="temperature" min="0" max="100" placeholder="e.g. 45"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold">
+            Check Risk
+          </button>
+        </form>
+        <div id="risk-result" class="mt-6 hidden"></div>
+      </div>
+    </section>
+
+    <!-- Page 4: Budget Stretch -->
+    <section id="page-budget-stretch" class="page-content hidden">
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">Budget Stretch Advisor</h2>
+        <form id="budget-form" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Your Budget (USD)</label>
+            <input type="number" name="budget" min="0" step="50" placeholder="e.g. 600"
+              class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+          </div>
+          <button type="submit" class="btn-primary w-full py-3 rounded-lg font-semibold">
+            Get Trade-off Suggestions
+          </button>
+        </form>
+        <div id="budget-result" class="mt-6 hidden"></div>
+      </div>
+    </section>
+
+    <!-- Page 6: AI Chat -->
+    <section id="page-ai-chat" class="page-content hidden">
+      <div class="bg-white rounded-xl shadow-md p-6 flex flex-col h-[600px]">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">Chat with SmartPC Advisor</h2>
+        <div id="chat-messages" class="flex-1 overflow-y-auto space-y-4 p-4 mb-4 border border-slate-100 rounded-lg bg-slate-50">
+          <!-- Messages appear here -->
+          <div class="message-bubble assistant bg-white border border-slate-200 rounded-2xl rounded-tl-none p-3 max-w-[80%] text-sm text-slate-700">
+            Hello! I'm your SmartPC Advisor. Ask me anything about PC hardware or for specific laptop recommendations!
+          </div>
+        </div>
+        <form id="chat-form" class="flex gap-2">
+          <input type="text" name="message" placeholder="Ask a question..." 
+            class="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500" required>
+          <button type="submit" class="btn-primary px-6 py-2 rounded-lg font-semibold">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Page 5: Judge Mode -->
+    <section id="page-judge-mode" class="page-content hidden">
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-semibold text-slate-800 mb-4">Judge Mode - Auto Demo</h2>
+        <p class="text-slate-600 mb-4">Runs a full demo: questionnaire → recommendation → comparison → risk check with AI narration.</p>
+        <button id="judge-demo-btn" class="btn-primary w-full py-3 rounded-lg font-semibold">
+          Start Demo
+        </button>
+        <div id="judge-output" class="mt-6 space-y-4 hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay" class="fixed inset-0 bg-black/30 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl p-6 shadow-xl flex items-center gap-3">
+      <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+      <span class="font-medium">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Toast for errors -->
+  <div id="toast" class="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg hidden z-50"></div>
+
+  <script src="form.js"></script>
+</body>
+</html>
